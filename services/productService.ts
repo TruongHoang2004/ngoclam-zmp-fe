@@ -22,6 +22,14 @@ export const productService = {
   },
 
   /**
+   * Get a single product by ID
+   */
+  getProductById: async (id: number): Promise<Product> => {
+    const response = await apiClient.get<Product>(`/products/${id}`);
+    return response.data;
+  },
+
+  /**
    * Create a new product
    */
   createProduct: async (data: CreateProductForm): Promise<Product> => {

@@ -1,4 +1,4 @@
-import ProductManager from "@/components/ProductPage";
+import ProductManager from "@/components/product/ProductPage";
 
 export default function Home() {
     return (
