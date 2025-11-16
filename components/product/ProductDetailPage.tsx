@@ -17,6 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { toast } from 'sonner';
 
 interface ProductDetailPageProps {
   id: number;
@@ -57,16 +58,15 @@ export default function ProductDetailPage({ id }: ProductDetailPageProps) {
   const handleDelete = async () => {
     if (!product || !id) return;
 
-    if (!confirm('Are you sure you want to delete this product?')) return;
 
     setDeleting(true);
     try {
       await productService.deleteProduct(id);
-      alert('Product deleted successfully');
+      toast.success('Product deleted successfully');
       router.push('/products');
     } catch (err) {
       console.error('Error deleting product:', err);
-      alert('Failed to delete product');
+      toast.error('Failed to delete product');
     } finally {
       setDeleting(false);
     }

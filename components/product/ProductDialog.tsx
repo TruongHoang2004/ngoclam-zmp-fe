@@ -18,6 +18,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
+import { toast } from 'sonner';
 
 interface ProductDialogProps {
   open: boolean;
@@ -66,7 +67,7 @@ const ProductDialog: React.FC<ProductDialogProps> = ({
 
   const handleSubmit = async () => {
     if (!formData.name || formData.price <= 0) {
-      alert('Please fill in required fields');
+      toast.error('Please fill in required fields');
       return;
     }
 
@@ -75,11 +76,11 @@ const ProductDialog: React.FC<ProductDialogProps> = ({
       if (mode === 'create') {
         const success = await onSubmit(formData);
         if (success) {
-          alert('Product created successfully');
+          toast.success('Product created successfully');
           onOpenChange(false);
           resetForm();
         } else {
-          alert('Failed to create product');
+          toast.error('Failed to create product');
         }
       } else {
         const updateData: UpdateProductRequest = {
@@ -90,11 +91,11 @@ const ProductDialog: React.FC<ProductDialogProps> = ({
         };
         const success = await onSubmit(updateData);
         if (success) {
-          alert('Product updated successfully');
+          toast.success('Product updated successfully');
           onOpenChange(false);
           resetForm();
         } else {
-          alert('Failed to update product');
+          toast.error('Failed to update product');
         }
       }
     } finally {

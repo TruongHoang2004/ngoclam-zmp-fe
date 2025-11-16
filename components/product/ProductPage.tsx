@@ -14,6 +14,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import BaseTable from '@/components/common/BaseTable';
 import ProductDialog from '@/components/product/ProductDialog';
 import { ProductColumn } from './ProductColumn';
+import { toast } from 'sonner';
 
 const ProductManager: React.FC = () => {
   const router = useRouter();
@@ -73,13 +74,12 @@ const ProductManager: React.FC = () => {
   };
 
   const handleDeleteProduct = async (id: number) => {
-    if (!confirm('Are you sure you want to delete this product?')) return;
 
     const success = await deleteProduct(id);
     if (success) {
-      alert('Product deleted successfully');
+      toast.success('Product deleted successfully');
     } else {
-      alert('Failed to delete product');
+      toast.error('Failed to delete product');
     }
   };
 
