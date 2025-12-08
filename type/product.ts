@@ -12,14 +12,20 @@ export interface Product {
     description: string;
     price: number;
     variants?: ProductVariant[];
-}
-
-export interface PaginationResponse {
-    data: Product[];
-    total: number;
-    page: number;
-    page_size: number;
-    total_pages: number;
+    images?: {
+        id: number;
+        product_id: number;
+        image_id: number;
+        variant_id?: number | null;
+        order: number;
+        is_main: boolean;
+        image: {
+            id: number;
+            url: string;
+            hash: string;
+        };
+        variant?: ProductVariant;
+    }[];
 }
 
 export interface CreateProductVariant {

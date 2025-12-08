@@ -16,5 +16,4 @@ export interface UpdateImageFromURLRequest {
   file_name?: string;
 }
 
-export type ImagePaginationResponse = PaginationResponse<Image>;
 

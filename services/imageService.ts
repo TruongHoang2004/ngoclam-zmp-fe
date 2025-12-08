@@ -1,14 +1,8 @@
 import axios from 'axios';
-import type { Image, ImagePaginationResponse, UploadImageFromURLRequest, UpdateImageFromURLRequest } from '@/type/image';
+import type { Image, UploadImageFromURLRequest, UpdateImageFromURLRequest } from '@/type/image';
+import apiClient from './client';
+import { PaginationResponse } from '@/type/pagination';
 
-const API_BASE_URL = 'http://localhost:8080/api/v1';
-
-const apiClient = axios.create({
-  baseURL: API_BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
 
 export const imageService = {
   /**
@@ -16,10 +10,17 @@ export const imageService = {
    * Backend uses page (1-based) and size query params
    * Defaults: page=1, size=20
    */
-  getImages: async (page: number = 1, size: number = 20): Promise<ImagePaginationResponse> => {
-    const response = await apiClient.get<ImagePaginationResponse>('/images', {
+  getImages: async (page: number = 1, size: number = 20): Promise<PaginationResponse<Image>> => {
+    const response = await apiClient.get<PaginationResponse<Image>>('/images', {
       params: { page, size },
     });
+
+    console.log(response.data);
+
+    if (!response.data) {
+      throw new Error('No data received from the server');
+    }
+
     return response.data;
   },
 

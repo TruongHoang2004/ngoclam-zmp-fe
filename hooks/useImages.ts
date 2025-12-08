@@ -132,6 +132,7 @@ export const useImages = (initialPage: number = 1, pageSize: number = 20): UseIm
       }
     };
     fetch();
+    console.log(images);
   }, [currentPage, pageSize]);
 
   return {

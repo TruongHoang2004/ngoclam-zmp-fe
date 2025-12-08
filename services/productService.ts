@@ -1,21 +1,15 @@
 import axios from 'axios';
-import type { Product, PaginationResponse, CreateProductForm, UpdateProductRequest } from '@/type/product';
+import type { Product, CreateProductForm, UpdateProductRequest } from '@/type/product';
+import apiClient from './client';
+import { PaginationResponse as Pagination } from '@/type/pagination';
 
-const API_BASE_URL = 'http://localhost:8080/api/v1';
-
-const apiClient = axios.create({
-  baseURL: API_BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
 
 export const productService = {
   /**
    * Fetch products with pagination
    */
-  getProducts: async (page: number = 1, size: number = 20): Promise<PaginationResponse> => {
-    const response = await apiClient.get<PaginationResponse>('/products', {
+  getProducts: async (page: number = 1, size: number = 20): Promise<Pagination<Product>> => {
+    const response = await apiClient.get<Pagination<Product>>('/products', {
       params: { page, size },
     });
     return response.data;
@@ -51,4 +45,8 @@ export const productService = {
   deleteProduct: async (id: number): Promise<void> => {
     await apiClient.delete(`/products/${id}`);
   },
+
+  addProductVariant: async (productId: number, variantId: number): Promise<void> => {
+    await apiClient.post(`/products/${productId}/variants/${variantId}`);
+  }
 };

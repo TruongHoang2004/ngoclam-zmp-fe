@@ -27,7 +27,7 @@ const ImageManager: React.FC = () => {
     setCurrentPage,
     currentPage,
     pageSize,
-  } = useImages(1, 12);
+  } = useImages(1, 20);
 
   const [showModal, setShowModal] = useState(false);
   const [modalMode, setModalMode] = useState<'create' | 'edit'>('create');
@@ -136,7 +136,7 @@ const ImageManager: React.FC = () => {
               <>
                 {/* Images Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                  {images.map((image) => (
+                  {(Array.isArray(images) ? images : []).map((image) => (
                     <Card
                       key={image.id}
                       className="group cursor-pointer hover:shadow-lg transition-shadow overflow-hidden"
