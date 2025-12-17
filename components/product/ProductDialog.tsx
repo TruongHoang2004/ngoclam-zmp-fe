@@ -182,7 +182,7 @@ const ProductDialog: React.FC<ProductDialogProps> = ({
                 <SelectValue placeholder="Select a category" />
               </SelectTrigger>
               <SelectContent>
-                {categories.map((category) => (
+                {(categories || []).map((category) => (
                   <SelectItem key={category.id} value={category.id.toString()}>
                     {category.name}
                   </SelectItem>

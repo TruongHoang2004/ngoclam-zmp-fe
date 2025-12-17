@@ -11,17 +11,17 @@ export const categoryService = {
 
     getCategory: async (id: number): Promise<Category> => {
         const response: AxiosResponse<any> = await apiClient.get(`/categories/${id}`);
-        return response.data.data;
+        return response.data;
     },
 
     listCategories: async (): Promise<Category[]> => {
         const response: AxiosResponse<any> = await apiClient.get('/categories');
-        return response.data.data;
+        return response.data;
     },
 
     updateCategory: async (id: number, data: UpdateCategoryRequest): Promise<Category> => {
         const response: AxiosResponse<any> = await apiClient.put(`/categories/${id}`, data);
-        return response.data.data;
+        return response.data;
     },
 
     deleteCategory: async (id: number): Promise<void> => {
@@ -32,6 +32,6 @@ export const categoryService = {
         const response: AxiosResponse<any> = await apiClient.get(`/categories/${id}/products`, {
             params: { page, size }
         });
-        return response.data.data;
+        return response.data;
     }
 };

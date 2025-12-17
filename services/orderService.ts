@@ -6,7 +6,7 @@ import { AxiosResponse } from 'axios';
 export const orderService = {
     createOrder: async (data: CreateOrderRequest): Promise<CreateOrderResponse> => {
         const response: AxiosResponse<any> = await apiClient.post('/orders', data);
-        return response.data.data;
+        return response.data;
     },
 
     listOrders: async (page: number = 1, size: number = 20): Promise<PaginationResponse<Order>> => {
@@ -18,6 +18,6 @@ export const orderService = {
 
     getOrder: async (id: number): Promise<Order> => {
         const response: AxiosResponse<any> = await apiClient.get(`/orders/${id}`);
-        return response.data.data;
+        return response.data;
     }
 };

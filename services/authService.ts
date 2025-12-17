@@ -8,6 +8,6 @@ export const authService = {
      */
     decodePhoneNumber: async (data: DecodePhoneNumberRequest): Promise<DecodePhoneNumberResponse> => {
         const response: AxiosResponse<any> = await apiClient.post('/auth/decode-phone', data);
-        return response.data.data;
+        return response.data;
     },
 };

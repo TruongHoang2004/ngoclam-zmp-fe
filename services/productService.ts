@@ -28,7 +28,7 @@ export const productService = {
    */
   getProductById: async (id: number): Promise<Product> => {
     const response: AxiosResponse<any> = await apiClient.get(`/products/${id}`);
-    return response.data.data;
+    return response.data;
   },
 
   /**
@@ -78,7 +78,7 @@ export const productService = {
    */
   listProductImages: async (productId: number): Promise<ProductImage[]> => {
     const response: AxiosResponse<any> = await apiClient.get(`/products/${productId}/images`);
-    return response.data.data;
+    return response.data;
   },
 
   /**
@@ -86,7 +86,7 @@ export const productService = {
    */
   attachProductImage: async (productId: number, data: AttachProductImageRequest): Promise<ProductImage> => {
     const response: AxiosResponse<any> = await apiClient.post(`/products/${productId}/images`, data);
-    return response.data.data;
+    return response.data;
   },
 
   /**
@@ -94,7 +94,7 @@ export const productService = {
    */
   updateProductImage: async (productId: number, imageId: number, data: UpdateProductImageRequest): Promise<ProductImage> => {
     const response: AxiosResponse<any> = await apiClient.patch(`/products/${productId}/images/${imageId}`, data);
-    return response.data.data;
+    return response.data;
   },
 
   /**

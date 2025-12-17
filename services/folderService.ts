@@ -12,17 +12,17 @@ export const folderService = {
         const response: AxiosResponse<any> = await apiClient.get('/folders', {
             params: { page, size }
         });
-        return response.data.data;
+        return response.data;
     },
 
     getFolder: async (id: number): Promise<Folder> => {
         const response: AxiosResponse<any> = await apiClient.get(`/folders/${id}`);
-        return response.data.data;
+        return response.data;
     },
 
     updateFolder: async (id: number, data: UpdateFolderRequest): Promise<Folder> => {
         const response: AxiosResponse<any> = await apiClient.put(`/folders/${id}`, data);
-        return response.data.data;
+        return response.data;
     },
 
     deleteFolder: async (id: number): Promise<void> => {
