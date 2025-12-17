@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Plus, X } from 'lucide-react';
-import type { Product, CreateProductForm, UpdateProductRequest } from '@/type/product';
+import type { Product, CreateProductForm, UpdateProductRequest, CreateProductVariant } from '@/type/product';
 
 // UI Components
 import { Button } from '@/components/ui/button';
@@ -19,6 +19,15 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
 import { toast } from 'sonner';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { categoryService } from '@/services/categoryService';
+import { Category } from '@/type/category';
 
 interface ProductDialogProps {
   open: boolean;
@@ -39,9 +48,24 @@ const ProductDialog: React.FC<ProductDialogProps> = ({
     name: '',
     description: '',
     price: 0,
+    category_id: 0,
     variants: [],
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [categories, setCategories] = useState<Category[]>([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const data = await categoryService.listCategories();
+        setCategories(data);
+      } catch (error) {
+        console.error('Failed to fetch categories:', error);
+        toast.error('Failed to load categories');
+      }
+    };
+    fetchCategories();
+  }, []);
 
   useEffect(() => {
     if (mode === 'edit' && product) {
@@ -49,6 +73,7 @@ const ProductDialog: React.FC<ProductDialogProps> = ({
         name: product.name,
         description: product.description || '',
         price: product.price,
+        category_id: 0,
         variants: [],
       });
     } else {
@@ -61,6 +86,7 @@ const ProductDialog: React.FC<ProductDialogProps> = ({
       name: '',
       description: '',
       price: 0,
+      category_id: 0,
       variants: [],
     });
   };
@@ -106,17 +132,17 @@ const ProductDialog: React.FC<ProductDialogProps> = ({
   const addVariant = () => {
     setFormData({
       ...formData,
-      variants: [...formData.variants, { name: '', price: 0, stock: 0 }],
+      variants: [...(formData.variants || []), { name: '', price: 0, stock: 0 }],
     });
   };
 
   const removeVariant = (index: number) => {
-    const newVariants = formData.variants.filter((_, i) => i !== index);
+    const newVariants = (formData.variants || []).filter((_, i) => i !== index);
     setFormData({ ...formData, variants: newVariants });
   };
 
-  const updateVariant = (index: number, field: keyof typeof formData.variants[0], value: string | number) => {
-    const newVariants = [...formData.variants];
+  const updateVariant = (index: number, field: keyof CreateProductVariant, value: string | number) => {
+    const newVariants = [...(formData.variants || [])];
     newVariants[index] = { ...newVariants[index], [field]: value };
     setFormData({ ...formData, variants: newVariants });
   };
@@ -144,6 +170,25 @@ const ProductDialog: React.FC<ProductDialogProps> = ({
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               placeholder="Enter product name"
             />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="category">Category *</Label>
+            <Select
+              value={formData.category_id?.toString()}
+              onValueChange={(value) => setFormData({ ...formData, category_id: parseInt(value) })}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select a category" />
+              </SelectTrigger>
+              <SelectContent>
+                {categories.map((category) => (
+                  <SelectItem key={category.id} value={category.id.toString()}>
+                    {category.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           <div className="space-y-2">
@@ -186,7 +231,7 @@ const ProductDialog: React.FC<ProductDialogProps> = ({
                   Add Variant
                 </Button>
               </div>
-              {formData.variants.map((variant, index) => (
+              {(formData.variants || []).map((variant, index) => (
                 <Card key={index} className="relative p-4">
                   <Button
                     variant="ghost"
